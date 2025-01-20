@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER?POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?POSTGRES_PASSWORD}
+      POSTGRES_DB: ohq
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 8081:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL?PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD?PGADMIN_PASSWORD}
+    volumes:
+      - ./pgadmin-servers.json:/pgadmin4/servers.json
