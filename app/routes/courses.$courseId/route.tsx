@@ -29,6 +29,7 @@ export default function CourseHome() {
   const data = useLoaderData<typeof loader>();
   return (
     <div>
+      <Link to="/">Home</Link>
       <h1>{data.course.code}</h1>
       <Link to={`/courses/${data.course.courseId}/events`}>Events</Link>
       <Link to={`/courses/${data.course.courseId}/admin`}>Settings</Link>

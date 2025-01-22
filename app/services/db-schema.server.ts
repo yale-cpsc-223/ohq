@@ -19,13 +19,18 @@ export const coursesRelations = relations(courses, ({ many }) => ({
   ohSessions: many(ohSessions),
 }));
 
-export const userRoleEnum = pgEnum("userRole", ["user", "admin"]);
+export const userRoleEnum = pgEnum("userRole", [
+  "student",
+  "instructor",
+  "admin",
+]);
 
 export const users = pgTable("users", {
   netId: text().notNull().primaryKey(),
-  name: text().notNull(),
+  firstName: text().notNull(),
+  lastName: text().notNull(),
   email: text().notNull(),
-  year: integer().notNull(),
+  year: integer(),
   role: userRoleEnum().notNull(),
 });
 
