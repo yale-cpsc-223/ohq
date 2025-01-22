@@ -16,21 +16,28 @@ export const courses = pgTable("courses", {
 
 export const coursesRelations = relations(courses, ({ many }) => ({
   courseUsers: many(courseUsers),
-  ohSessions: many(ohSession),
+  ohSessions: many(ohSessions),
 }));
+
+export const userRoleEnum = pgEnum("userRole", ["user", "admin"]);
 
 export const users = pgTable("users", {
   netId: text().notNull().primaryKey(),
   name: text().notNull(),
   email: text().notNull(),
   year: integer().notNull(),
+  role: userRoleEnum().notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
   courseUsers: many(courseUsers),
 }));
 
-export const roleEnum = pgEnum("role", ["student", "ula", "instructor"]);
+export const courseRoleEnum = pgEnum("courseRole", [
+  "student",
+  "ula",
+  "instructor",
+]);
 
 export const courseUsers = pgTable(
   "courseUsers",
@@ -41,7 +48,7 @@ export const courseUsers = pgTable(
     netId: text()
       .notNull()
       .references(() => users.netId),
-    role: roleEnum(),
+    role: courseRoleEnum(),
   },
   (t) => [primaryKey({ columns: [t.courseId, t.netId] })],
 );
@@ -51,7 +58,7 @@ export const courseUsersRelations = relations(courseUsers, ({ one }) => ({
   user: one(users),
 }));
 
-export const ohSession = pgTable("ohSession", {
+export const ohSessions = pgTable("ohSessions", {
   courseId: text()
     .notNull()
     .references(() => courses.courseId),
@@ -60,7 +67,7 @@ export const ohSession = pgTable("ohSession", {
   endTime: timestamp().notNull(),
 });
 
-export const ohSessionRelations = relations(ohSession, ({ one }) => ({
+export const ohSessionsRelations = relations(ohSessions, ({ one }) => ({
   course: one(courses),
 }));
 
@@ -69,7 +76,7 @@ export const ohSessionQueue = pgTable(
   {
     eventId: text()
       .notNull()
-      .references(() => ohSession.eventId),
+      .references(() => ohSessions.eventId),
     netId: text()
       .notNull()
       .references(() => users.netId),

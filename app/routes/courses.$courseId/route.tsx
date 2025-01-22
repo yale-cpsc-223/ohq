@@ -31,6 +31,7 @@ export default function CourseHome() {
     <div>
       <h1>{data.course.code}</h1>
       <Link to={`/courses/${data.course.courseId}/events`}>Events</Link>
+      <Link to={`/courses/${data.course.courseId}/admin`}>Settings</Link>
       <Outlet />
     </div>
   );
@@ -42,19 +43,19 @@ export function ErrorBoundary() {
   if (isRouteErrorResponse(error)) {
     switch (error.status) {
       case 404:
-        return <div>Course not found!</div>;
+        return <h1>Course not found!</h1>;
     }
 
     return (
-      <div>
+      <h1>
         Something went wrong: {error.status} {error.statusText}
-      </div>
+      </h1>
     );
   }
 
   return (
-    <div>
+    <h1>
       Something went wrong: {(error as Error)?.message || "Unknown Error"}
-    </div>
+    </h1>
   );
 }
