@@ -1,0 +1,53 @@
+.container {
+  width: 100%;
+  height: max(80vh, 700px);
+}
+
+.calendar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  list-style: none;
+  padding: 0;
+}
+
+.calendarDayCol {
+  width: calc(100% / 7);
+  height: 100%;
+  border: 2px solid #f0f0f0;
+}
+
+.calendarDayHeader {
+  height: 50px;
+}
+
+.calendarDayHeader * {
+  display: block;
+  text-align: center;
+}
+
+.calendarDayEvents {
+  display: block;
+  height: calc(100% - 200px);
+  position: relative;
+  list-style: none;
+  padding: 0;
+}
+
+.calendarEvent {
+  display: block;
+  width: calc(100% - 16px);
+  border: 1px solid black;
+  margin: 8px;
+  border-radius: 4px;
+  position: absolute;
+}
+
+.calendarEventBody {
+  display: block;
+  color: unset;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+}

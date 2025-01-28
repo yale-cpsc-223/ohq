@@ -39,7 +39,7 @@ export default function Index() {
       )}
       <ul>
         {data.courses.map((c) => (
-          <li>
+          <li key={c.courseId}>
             <Link to={`/courses/${c.courseId}`}>{c.code}</Link>
           </li>
         ))}

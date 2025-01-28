@@ -88,6 +88,7 @@ async function getUserData(netId: string): Promise<SessionData["user"] | null> {
       lastName: users.lastName,
       email: users.email,
       year: users.year,
+      timeZone: users.timeZone,
       role: users.role,
     })
     .from(users)
@@ -126,6 +127,7 @@ async function getUserData(netId: string): Promise<SessionData["user"] | null> {
     lastName: yaliesUserData.last_name,
     email: yaliesUserData.email,
     year: yaliesUserData.year ?? null,
+    timeZone: "America/New_York",
     role: "student",
   };
   await db.insert(users).values(user);

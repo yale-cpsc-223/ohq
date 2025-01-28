@@ -20,6 +20,7 @@ export const action: ActionFunction = async ({ request }) => {
     lastName,
     email,
     year: year ? parseInt(year, 10) : null,
+    timeZone: "America/New_York",
     role: "student",
   };
   await db.insert(users).values(user);

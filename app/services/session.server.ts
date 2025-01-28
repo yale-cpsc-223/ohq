@@ -7,6 +7,7 @@ export type SessionData = {
     lastName: string;
     email: string;
     year: number | null;
+    timeZone: string;
     role: "student" | "instructor" | "admin";
   };
   // Just the netID, before onboarding

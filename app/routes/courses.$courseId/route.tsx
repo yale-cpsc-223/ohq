@@ -32,7 +32,7 @@ export default function CourseHome() {
       <Link to="/">Home</Link>
       <h1>{data.course.code}</h1>
       <Link to={`/courses/${data.course.courseId}/events`}>Events</Link>
-      <Link to={`/courses/${data.course.courseId}/admin`}>Settings</Link>
+      <Link to={`/courses/${data.course.courseId}/settings`}>Settings</Link>
       <Outlet />
     </div>
   );

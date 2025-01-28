@@ -3,10 +3,23 @@ import { PassThrough } from "node:stream";
 import type { AppLoadContext, EntryContext } from "@remix-run/node";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
+import { type Temporal, toTemporalInstant } from "temporal-polyfill";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
 const ABORT_DELAY = 5_000;
+
+declare global {
+  interface Date {
+    toTemporalInstant(): Temporal.Instant;
+  }
+}
+
+Object.defineProperty(Date.prototype, "toTemporalInstant", {
+  value: toTemporalInstant,
+  writable: true,
+  configurable: true,
+});
 
 export default function handleRequest(
   request: Request,

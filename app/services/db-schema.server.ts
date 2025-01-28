@@ -12,6 +12,7 @@ export const courses = pgTable("courses", {
   courseId: text().notNull().primaryKey(),
   season: text().notNull(),
   code: text().notNull(),
+  entryCode: text().notNull(),
 });
 
 export const coursesRelations = relations(courses, ({ many }) => ({
@@ -31,6 +32,7 @@ export const users = pgTable("users", {
   lastName: text().notNull(),
   email: text().notNull(),
   year: integer(),
+  timeZone: text().default("America/New_York").notNull(),
   role: userRoleEnum().notNull(),
 });
 
@@ -70,11 +72,30 @@ export const ohSessions = pgTable("ohSessions", {
   eventId: text().notNull().primaryKey(),
   startTime: timestamp().notNull(),
   endTime: timestamp().notNull(),
+  location: text().notNull(),
 });
 
-export const ohSessionsRelations = relations(ohSessions, ({ one }) => ({
+export const ohSessionsRelations = relations(ohSessions, ({ one, many }) => ({
   course: one(courses),
+  helpers: many(ohSessionHelpers),
 }));
+
+export const ohSessionHelpers = pgTable("ohSessionHelpers", {
+  eventId: text()
+    .notNull()
+    .references(() => ohSessions.eventId),
+  netId: text()
+    .notNull()
+    .references(() => users.netId),
+});
+
+export const ohSessionHelpersRelations = relations(
+  ohSessionHelpers,
+  ({ one }) => ({
+    session: one(ohSessions),
+    user: one(users),
+  }),
+);
 
 export const ohSessionQueue = pgTable(
   "ohSessionQueue",
@@ -86,6 +107,7 @@ export const ohSessionQueue = pgTable(
       .notNull()
       .references(() => users.netId),
     problem: text().notNull(),
+    notes: text(),
     joinTime: timestamp().notNull(),
   },
   (t) => [primaryKey({ columns: [t.eventId, t.netId] })],
