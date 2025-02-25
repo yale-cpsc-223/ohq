@@ -9,6 +9,7 @@ import {
 import { eq } from "drizzle-orm";
 import { courses } from "~/services/db-schema.server";
 import { db } from "~/services/db.server";
+import styles from "./styles.module.css";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const course = await db
@@ -31,8 +32,21 @@ export default function CourseHome() {
     <div>
       <Link to="/">Home</Link>
       <h1>{data.course.code}</h1>
-      <Link to={`/courses/${data.course.courseId}/events`}>Events</Link>
-      <Link to={`/courses/${data.course.courseId}/settings`}>Settings</Link>
+      <nav className={styles.courseNav}>
+        <ul>
+          <li>
+            <Link to={`/courses/${data.course.courseId}/events`}>Events</Link>
+          </li>
+          <li>
+            <Link to={`/courses/${data.course.courseId}/queue`}>Queue</Link>
+          </li>
+          <li>
+            <Link to={`/courses/${data.course.courseId}/settings`}>
+              Settings
+            </Link>
+          </li>
+        </ul>
+      </nav>
       <Outlet />
     </div>
   );

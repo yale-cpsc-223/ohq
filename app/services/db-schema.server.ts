@@ -15,7 +15,8 @@ export const courses = pgTable("courses", {
   entryCode: text().notNull(),
 });
 
-export const coursesRelations = relations(courses, ({ many }) => ({
+export const coursesRelations = relations(courses, ({ one, many }) => ({
+  queue: one(ohSessionQueue),
   courseUsers: many(courseUsers),
   ohSessions: many(ohSessions),
 }));
@@ -69,6 +70,9 @@ export const ohSessions = pgTable("ohSessions", {
   courseId: text()
     .notNull()
     .references(() => courses.courseId),
+  helper: text()
+    .notNull()
+    .references(() => users.netId),
   eventId: text().notNull().primaryKey(),
   startTime: timestamp().notNull(),
   endTime: timestamp().notNull(),
@@ -77,32 +81,14 @@ export const ohSessions = pgTable("ohSessions", {
 
 export const ohSessionsRelations = relations(ohSessions, ({ one, many }) => ({
   course: one(courses),
-  helpers: many(ohSessionHelpers),
 }));
-
-export const ohSessionHelpers = pgTable("ohSessionHelpers", {
-  eventId: text()
-    .notNull()
-    .references(() => ohSessions.eventId),
-  netId: text()
-    .notNull()
-    .references(() => users.netId),
-});
-
-export const ohSessionHelpersRelations = relations(
-  ohSessionHelpers,
-  ({ one }) => ({
-    session: one(ohSessions),
-    user: one(users),
-  }),
-);
 
 export const ohSessionQueue = pgTable(
   "ohSessionQueue",
   {
-    eventId: text()
+    courseId: text()
       .notNull()
-      .references(() => ohSessions.eventId),
+      .references(() => courses.courseId),
     netId: text()
       .notNull()
       .references(() => users.netId),
@@ -110,5 +96,5 @@ export const ohSessionQueue = pgTable(
     notes: text(),
     joinTime: timestamp().notNull(),
   },
-  (t) => [primaryKey({ columns: [t.eventId, t.netId] })],
+  (t) => [primaryKey({ columns: [t.courseId, t.netId] })],
 );
